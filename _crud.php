@@ -5,13 +5,14 @@ class CRUD{
 	private $host = 'localhost';
 	private $user = 'root';
 	private $pass = '';
-	private $db = 'web_tugas';
+	private $db = 'nsp';
 	private $con;
 
 	public function __construct(){
 
 		$this->con = mysqli_connect($this->host,$this->user,$this->pass,$this->db);
 	}
+        
 
 	public function insert($table, $rows){
 
@@ -28,7 +29,7 @@ class CRUD{
 	    return $this->con->affected_rows;
 	}
 
-	public function ambil($table, $where = false, $hitung = false, $queryx = false){
+	public function get($table, $where = false, $hitung = false, $queryx = false){
 		$query = "SELECT * FROM $table ";
 
 		if ($where) {
