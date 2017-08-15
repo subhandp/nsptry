@@ -15,7 +15,7 @@ class Nsp {
         $this->hari = 30; $this->populasi = 2; $this->evolusi = 1;
         $this->host = 'localhost'; $this->user = 'root'; $this->pass = ''; $this->dbName = 'nsp';  
         $this->db = mysqli_connect($this->host,$this->user,$this->pass,$this->dbName);
-        $this->shift = ['P/Pagi','S/Siang','M/Malam'];
+        $this->shift = [['P'], ['S','S','O'], ['M','M','O','O']];
         $this->Cuti = ['CT/Cuti Tahunan', 'CM/Cuti Melahirkan'];
         $this->init_bidan();
     }
@@ -30,36 +30,19 @@ class Nsp {
         }
 
     }
-//    function fix_shift_off($individu){
-//        $malam = 0;
-//        foreach ($individu as $key1 => $value) {
-//            foreach ($value as $key2 => $shift) {
-//                if($shift == 'M'){
-//                    $malam += 1;
-//                    if($malam == 2){
-//                        echo "[$key1][$key2] ";
-//                        $individu[$key1][$key2]= 'O';
-//                        $malam = 0;
-//                    }
-//                }
-//                else{
-//                    $malam = 0;
-//                }
-//            }
-//        }
-//        
-//        return $individu;
-//    }
+
     
     function generate_random_shift(){
         $bidanShift = [];
         //generate bidan ramdom shift full periode
-        for ($index1 = 0; $index1 < $this->hari; $index1++) {
-            $shift =  explode('/', $this->shift[mt_rand(0,2)])[0];
-            array_push( $bidanShift, $shift);  
-        } 
+        while(true){
+            $bidanShift = array_merge($bidanShift, $this->shift[mt_rand(0,2)]); 
+            if(count($bidanShift) > $this->hari){
+                $bidanShift = array_slice($bidanShift, 0, $this->hari);
+                return $bidanShift;
+            }
+        }
         
-        return $bidanShift;
     }
     
     function populasi_awal(){
